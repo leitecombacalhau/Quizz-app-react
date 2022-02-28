@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
+import Questionaire from "./components/Questionaire";
+import Home from "./components/Home";
+
+import { questions } from "./data.js";
+
+// Shuffle the questions
+questions.sort(() => Math.random() - 0.5);
+
+export default function App() {
+  const sleep = (m = 2000) => new Promise((r) => setTimeout(r, m));
+
+  const [displayLoading, setDisplayLoading] = useState(false);
+
+  const loadScene = async () => {
+    setDisplayLoading(true);
+    await sleep(Math.random() * (1500 - 700) + 700);
+    setDisplayLoading(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              loadingScene={{
+                loadScene,
+                displayLoading,
+              }}
+            />
+          }
+        />
+        <Route
+          path="/quizz"
+          element={
+            <Questionaire
+              questions={questions}
+              loadingScene={{
+                loadScene,
+                displayLoading,
+              }}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }
-
-export default App;
