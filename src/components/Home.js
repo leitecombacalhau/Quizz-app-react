@@ -2,11 +2,9 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import Loading from "./Loading"
+import Loading from "./Loading";
 
-export default function Home({
-  loadingScene: { loadScene, displayLoading },
-}) {
+export default function Home({ loadingScene: { loadScene, displayLoading } }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
