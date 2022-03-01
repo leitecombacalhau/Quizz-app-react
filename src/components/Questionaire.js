@@ -4,8 +4,7 @@ import Loading from "./Loading";
 import EndGame from "./EndGame";
 
 import { Howl } from "howler";
-
-let userAnswersArray = [];
+import RecapChart from "./RecapChart";
 
 let sounds = {
   correct: new Howl({
@@ -18,8 +17,10 @@ let sounds = {
   }),
 };
 
-export default function Question({
+export default function Questionaire({
   questions,
+  pushToAnswers,
+  userAnswersArray,
   loadingScene: { loadScene: loadSceneImported, displayLoading },
 }) {
   const loadScene = () => {
@@ -112,7 +113,7 @@ export default function Question({
     let chosenAnswer = document.getElementById(id);
     chosenAnswer.className += " bg-purple-800 text-white hover:bg-purple-900";
     chosenAnswer.setAttribute("name", "chosenAnswer");
-    userAnswersArray.push({
+    pushToAnswers({
       answer,
       _id: id,
       isCorrect: correctAnswers.includes(answer),
@@ -121,59 +122,53 @@ export default function Question({
     setPostClickButtons(true);
   };
 
-  return (
-    <>
-      {displayLoading ? (
-        <Loading />
-      ) : endGame ? (
-        <EndGame
-          questions={questions}
-          setEndGame={setEndGame}
-          userAnswersArray={userAnswersArray}
-          emptyArray={() => (userAnswersArray = [])}
-          shuffleQuestions={() => questions.sort(() => Math.random() - 0.5)}
+  return displayLoading ? (
+    <Loading />
+  ) : endGame ? (
+    <EndGame
+      questions={questions}
+      setEndGame={setEndGame}
+      userAnswersArray={userAnswersArray}
+    />
+  ) : (
+    <div className="flex flex-col">
+      <div className="bg-white text-purple-800 p-10 rounded-lg shadow-md">
+        <h2
+          className="text-2xl"
+          dangerouslySetInnerHTML={{ __html: `${question}` }}
         />
-      ) : (
-        <div className="flex flex-col">
-          <div className="bg-white text-purple-800 p-10 rounded-lg shadow-md">
-            <h2
-              className="text-2xl"
-              dangerouslySetInnerHTML={{ __html: `${question}` }}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-6 mt-6">
-            {answers.map((answer, id) => {
-              return (
-                <button
-                  id={id}
-                  name={"answer"}
-                  className={buttonsClass.DEFAULTBUTTON}
-                  disabled={buttonDisabled}
-                  onClick={() => handleAnswer(answer, id)}
-                >
-                  {answer}
-                </button>
-              );
-            })}
-            {postClickButtons && (
-              <button
-                className="col-start-1 bg-purple-700 text-white p-4 font-semibold rounded shadow mt-6 active:translate-y-0.5"
-                onClick={showAnswers}
-              >
-                Mostar Respostas
-              </button>
-            )}
-            {postClickButtons && (
-              <button
-                className="col-start-2 bg-purple-700 text-white p-4 font-semibold rounded shadow mt-6 active:translate-y-0.5"
-                onClick={nextQuestion}
-              >
-                Próxima Pergunta
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-    </>
+      </div>
+      <div className="grid grid-cols-2 gap-6 mt-6">
+        {answers.map((answer, id) => {
+          return (
+            <button
+              id={id}
+              name={"answer"}
+              className={buttonsClass.DEFAULTBUTTON}
+              disabled={buttonDisabled}
+              onClick={() => handleAnswer(answer, id)}
+            >
+              {answer}
+            </button>
+          );
+        })}
+        {postClickButtons && (
+          <button
+            className="col-start-1 bg-purple-700 text-white p-4 font-semibold rounded shadow mt-6 active:translate-y-0.5"
+            onClick={showAnswers}
+          >
+            Mostar Respostas
+          </button>
+        )}
+        {postClickButtons && (
+          <button
+            className="col-start-2 bg-purple-700 text-white p-4 font-semibold rounded shadow mt-6 active:translate-y-0.5"
+            onClick={nextQuestion}
+          >
+            Próxima Pergunta
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

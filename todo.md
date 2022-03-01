@@ -1,8 +1,8 @@
 # Todo List
 
 - [x] Button to go to the homepage
-- [ ] Recap of the answers
+- [x] Recap of the answers
   - [x] Basic Recap
-  - [ ] Graphic (% etc.)
+  - [x] Graphic (% etc.)
 - [x] Add sound
-- [ ] Change ICON
+- [x] Change ICON

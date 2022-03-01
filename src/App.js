@@ -6,6 +6,8 @@ import Home from "./components/Home";
 
 import { questions } from "./data.js";
 
+const userAnswersArray = [];
+
 // Shuffle the questions
 questions.sort(() => Math.random() - 0.5);
 
@@ -14,6 +16,10 @@ export default function App() {
 
   const [displayLoading, setDisplayLoading] = useState(false);
 
+  const emptyArray = () => (userAnswersArray.length = 0);
+  const shuffleQuestions = () => questions.sort(() => Math.random() - 0.5);
+  const pushToAnswers = (load) => userAnswersArray.push(load);
+  
   const loadScene = async () => {
     setDisplayLoading(true);
     await sleep(Math.random() * (1500 - 700) + 700);
@@ -27,6 +33,8 @@ export default function App() {
           path="/"
           element={
             <Home
+              shuffleQuestions={shuffleQuestions}
+              emptyArray={emptyArray}
               loadingScene={{
                 loadScene,
                 displayLoading,
@@ -39,6 +47,8 @@ export default function App() {
           element={
             <Questionaire
               questions={questions}
+              pushToAnswers={pushToAnswers}
+              userAnswersArray={userAnswersArray}
               loadingScene={{
                 loadScene,
                 displayLoading,

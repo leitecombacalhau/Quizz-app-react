@@ -4,26 +4,17 @@ import Recap from "./Recap";
 
 import { useNavigate } from "react-router-dom";
 
-export default function EndGame({
-  questions,
-  setEndGame,
-  userAnswersArray,
-  emptyArray,
-  shuffleQuestions,
-}) {
+export default function EndGame({ questions, setEndGame, userAnswersArray }) {
   const navigate = useNavigate();
 
   const [showRecap, setShowRecap] = useState(false);
 
   const handleReturnHome = () => {
     setEndGame(false);
-    shuffleQuestions();
-    emptyArray();
     navigate("/");
   };
 
   const handleRecap = () => setShowRecap(true);
-
   return showRecap ? (
     <Recap
       questions={questions}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import RecapChart from "./RecapChart";
 
 export default function Recap({
   questions,
@@ -7,6 +8,7 @@ export default function Recap({
 }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showReturnHomeButton, setShowReturnHomeButton] = useState(false);
+  const [showChart, setShowChart] = useState(true);
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex(
@@ -23,7 +25,29 @@ export default function Recap({
       correctAnswer !== userAnswersArray[currentQuestionIndex].answer
   );
 
-  return (
+  return showChart ? (
+    <div className="grid grid-cols-6 gap-7">
+      <div className="col-start-2 col-end-6 h-4/5">
+        <RecapChart userAnswersArray={userAnswersArray} />
+      </div>
+      <div className="col-start-1 col-end-4">
+        <button
+          className="bg-white p-8 w-full text-purple-800 font-semibold text-xl rounded-lg shadow active:translate-y-0.5 hover:bg-slate-200"
+          onClick={handleReturnHome}
+        >
+          Voltar à página inicial
+        </button>
+      </div>
+      <div className="col-start-4 col-end-8">
+        <button
+          className="bg-white p-8 w-full text-purple-800 font-semibold text-xl rounded-lg shadow active:translate-y-0.5 hover:bg-slate-200"
+          onClick={() => setShowChart(false)}
+        >
+          Sumário - Respostas
+        </button>
+      </div>
+    </div>
+  ) : (
     <div
       className={`grid grid-rows-${
         otherCorrectAnswers.length > 0 ? 4 : 2
